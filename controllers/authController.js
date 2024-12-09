@@ -1,6 +1,5 @@
-// src/controllers/authController.js
-const User = require('../models/userModel');
-const { successResponse, errorResponse } = require('../utils/responseUtil');
+const User = require('../models/userModel');  // 수정: 올바른 경로로 User 모델 가져오기
+const { successResponse, errorResponse } = require('../utils/responseUtil');  // 올바른 경로로 successResponse, errorResponse 가져오기
 const bcrypt = require('bcryptjs');  // 비밀번호 암호화를 위한 라이브러리
 const jwt = require('jsonwebtoken');  // JWT를 위한 라이브러리
 
@@ -15,8 +14,8 @@ class AuthController {
       return errorResponse(res, 'Invalid email format', 'INVALID_EMAIL');
     }
 
-    // 비밀번호 암호화 (Base64 인코딩은 사용하지 않지만, 안전한 방식으로 암호화)
-    const hashedPassword = bcrypt.hashSync(passwd, 10);  // 10은 암호화 강도
+    // 비밀번호 암호화
+    const hashedPassword = bcrypt.hashSync(passwd, 10);
 
     try {
       // 중복된 이메일 검사
@@ -25,7 +24,7 @@ class AuthController {
         return errorResponse(res, 'Email already exists', 'EMAIL_EXISTS');
       }
 
-      // 사용자 정보 저장 (create -> createUser -> create로 수정)
+      // 사용자 정보 저장
       const result = await User.create({ email, passwd: hashedPassword, name });
       
       successResponse(res, { message: 'User registered successfully', userId: result.insertId });
@@ -43,6 +42,7 @@ class AuthController {
       // 이메일로 사용자 조회
       const user = await User.findByEmail(email);  // 수정: User.getUserByEmail -> User.findByEmail
       if (!user) {
+        console.log("User not found: ", email); // 로그 추가
         return errorResponse(res, 'User not found', 'USER_NOT_FOUND');
       }
 
@@ -54,9 +54,6 @@ class AuthController {
 
       // JWT 토큰 발급
       const accessToken = jwt.sign({ userId: user.id, email: user.email }, 'your-secret-key', { expiresIn: '1h' });
-
-      // 로그인 이력 저장 (선택사항)
-      // 이력 저장 로직 추가
 
       successResponse(res, { message: 'Login successful', accessToken });
     } catch (error) {

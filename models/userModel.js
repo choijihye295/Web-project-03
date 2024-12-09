@@ -3,9 +3,9 @@ const pool = require('../config/dbConfig'); // DB 연결 설정을 import
 
 // 이메일로 사용자 찾기
 async function findByEmail(email) {
-  const [rows] = await pool.query('SELECT * FROM Users WHERE email = ?', [email]);
-  return rows[0]; // 첫 번째 사용자 반환 (없으면 undefined)
-}
+    const [rows] = await pool.query('SELECT * FROM Users WHERE email = ?', [email]);
+    return rows.length > 0 ? rows[0] : null; // 이메일이 존재하면 첫 번째 사용자 반환, 없으면 null
+  }
 
 // 사용자 생성
 async function create(userData) {

@@ -1,5 +1,6 @@
 // jwtUtil.js
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 // Access token 생성
 function generateAccessToken(userId, email) {
