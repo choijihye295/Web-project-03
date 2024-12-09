@@ -41,6 +41,7 @@ class AuthController {
     try {
       // 이메일로 사용자 조회
       const user = await User.findByEmail(email);  // 수정: User.getUserByEmail -> User.findByEmail
+      console.log("User found in login:", user); 
       if (!user) {
         console.log("User not found: ", email); // 로그 추가
         return errorResponse(res, 'User not found', 'USER_NOT_FOUND');

@@ -3,8 +3,14 @@ const pool = require('../config/dbConfig'); // DB 연결 설정을 import
 
 // 이메일로 사용자 찾기
 async function findByEmail(email) {
-    const [rows] = await pool.query('SELECT * FROM Users WHERE email = ?', [email]);
-    return rows.length > 0 ? rows[0] : null; // 이메일이 존재하면 첫 번째 사용자 반환, 없으면 null
+    try {
+      const [rows] = await pool.query('SELECT * FROM Users WHERE email = ?', [email]);
+      console.log("User found:", rows);  // 콘솔로 결과를 확인
+      return rows.length > 0 ? rows[0] : null; // 이메일이 존재하면 첫 번째 사용자 반환, 없으면 null
+    } catch (error) {
+      console.error("Error fetching user by email:", error);  // 쿼리 실행 시 에러가 있다면 출력
+      throw new Error('Database query error');
+    }
   }
 
 // 사용자 생성
