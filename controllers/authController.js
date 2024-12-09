@@ -1,4 +1,5 @@
 const User = require('../models/userModel');  // 수정: 올바른 경로로 User 모델 가져오기
+const LoginHistory = require('../models/loginHistoryModel');  // LoginHistory 모델 불러오기
 const { successResponse, errorResponse } = require('../utils/responseUtil');  // 올바른 경로로 successResponse, errorResponse 가져오기
 const bcrypt = require('bcryptjs');  // 비밀번호 암호화를 위한 라이브러리
 const jwt = require('jsonwebtoken');  // JWT를 위한 라이브러리
@@ -58,11 +59,33 @@ class AuthController {
       const accessToken = jwt.sign({ userId: user.id, email: user.email }, 'your-secret-key', { expiresIn: '1h' });
 
       // 로그인 이력 저장
-      await authService.logLoginActivity(user.id);  // 로그인 이력 기록
-      
+      await LoginHistory.create({
+        user_id: user.id,
+        login_time: new Date(),
+      });
+
       successResponse(res, { message: 'Login successful', accessToken });
     } catch (error) {
       console.error('Error logging in:', error);
+      errorResponse(res, error.message);
+    }
+  }
+
+  // 로그인 이력 조회
+  static async getLoginHistory(req, res) {
+    const userId = req.user.userId;  // 인증된 사용자의 userId 사용
+
+    try {
+      // userId를 기준으로 로그인 이력 조회
+      const loginHistory = await LoginHistory.getLoginHistoryByUserId(userId);
+
+      if (loginHistory.length === 0) {
+        return errorResponse(res, 'No login history found for this user', 'NO_HISTORY');
+      }
+
+      successResponse(res, loginHistory);
+    } catch (error) {
+      console.error('Error fetching login history:', error);
       errorResponse(res, error.message);
     }
   }

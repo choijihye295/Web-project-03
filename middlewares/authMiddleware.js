@@ -1,11 +1,11 @@
-// /middleware/authMiddleware.js
+// src/middlewares/authMiddleware.js
 const jwt = require('jsonwebtoken');
 
 function verifyToken(req, res, next) {
   try {
     // 요청 헤더에서 Access Token 추출
-    const token = req.headers.authorization.split(' ')[1]; // Bearer <token> 형태에서 <token> 부분 추출
-
+    const token = req.headers.authorization.split(' ')[1]; 
+    
     if (!token) {
       return res.status(403).json({ message: 'No token provided' });
     }

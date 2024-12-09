@@ -1,8 +1,9 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const jobRoutes = require('./routes/jobRoutes');  // 라우트 파일 임포트
 const authRoutes = require('./routes/authRoutes');  // authRoutes 추가
-require('dotenv').config();
 const app = express();
 
 // 미들웨어 설정
