@@ -55,9 +55,13 @@ class AuthController {
         return errorResponse(res, 'Invalid password', 'INVALID_PASSWORD');
       }
 
-      // JWT 토큰 발급
-      const accessToken = jwt.sign({ userId: user.id, email: user.email }, 'your-secret-key', { expiresIn: '1h' });
-
+      // JWT 토큰 발급 (환경 변수에서 가져오기)
+      const accessToken = jwt.sign(
+        { userId: user.id, email: user.email },
+        process.env.JWT_SECRET_KEY,  // 환경 변수로 비밀키 사용
+        { expiresIn: '1h' }  // 1시간 동안 유효
+      );
+      
       // 로그인 이력 저장
       await LoginHistory.create({
         user_id: user.id,
