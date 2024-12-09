@@ -20,13 +20,13 @@ class AuthController {
 
     try {
       // 중복된 이메일 검사
-      const existingUser = await User.getUserByEmail(email);
+      const existingUser = await User.findByEmail(email);  // 수정: User.getUserByEmail -> User.findByEmail
       if (existingUser) {
         return errorResponse(res, 'Email already exists', 'EMAIL_EXISTS');
       }
 
-      // 사용자 정보 저장
-      const result = await User.createUser(email, hashedPassword, name);
+      // 사용자 정보 저장 (create -> createUser -> create로 수정)
+      const result = await User.create({ email, passwd: hashedPassword, name });
       
       successResponse(res, { message: 'User registered successfully', userId: result.insertId });
     } catch (error) {
@@ -41,7 +41,7 @@ class AuthController {
 
     try {
       // 이메일로 사용자 조회
-      const user = await User.getUserByEmail(email);
+      const user = await User.findByEmail(email);  // 수정: User.getUserByEmail -> User.findByEmail
       if (!user) {
         return errorResponse(res, 'User not found', 'USER_NOT_FOUND');
       }
