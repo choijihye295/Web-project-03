@@ -1,6 +1,7 @@
 // src/services/authService.js
 const bcrypt = require('bcryptjs');  // bcrypt -> bcryptjs로 변경
 const User = require('../models/userModel');
+const LoginHistory = require('../models/loginHistoryModel');
 const jwtUtil = require('../utils/jwtUtil');
 
 async function authenticateUser(email, password) {
@@ -18,6 +19,15 @@ async function authenticateUser(email, password) {
 
   return user;
 }
+
+// 로그인 이력 기록
+async function logLoginActivity(userId) {
+    try {
+      await LoginHistory.createLoginHistory(userId); // 로그인 이력 저장
+    } catch (error) {
+      throw new Error(`Error logging login activity: ${error.message}`);
+    }
+  }
 
 async function saveRefreshToken(userId, refreshToken) {
   await User.updateRefreshToken(userId, refreshToken);

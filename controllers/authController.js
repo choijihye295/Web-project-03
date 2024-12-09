@@ -2,6 +2,7 @@ const User = require('../models/userModel');  // 수정: 올바른 경로로 Use
 const { successResponse, errorResponse } = require('../utils/responseUtil');  // 올바른 경로로 successResponse, errorResponse 가져오기
 const bcrypt = require('bcryptjs');  // 비밀번호 암호화를 위한 라이브러리
 const jwt = require('jsonwebtoken');  // JWT를 위한 라이브러리
+const authService = require('../services/authService');
 
 class AuthController {
   // 회원가입
@@ -56,6 +57,9 @@ class AuthController {
       // JWT 토큰 발급
       const accessToken = jwt.sign({ userId: user.id, email: user.email }, 'your-secret-key', { expiresIn: '1h' });
 
+      // 로그인 이력 저장
+      await authService.logLoginActivity(user.id);  // 로그인 이력 기록
+      
       successResponse(res, { message: 'Login successful', accessToken });
     } catch (error) {
       console.error('Error logging in:', error);
