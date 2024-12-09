@@ -5,7 +5,7 @@ function verifyToken(req, res, next) {
   try {
     // 요청 헤더에서 Access Token 추출
     const token = req.headers.authorization.split(' ')[1]; 
-    
+
     if (!token) {
       return res.status(403).json({ message: 'No token provided' });
     }
@@ -28,5 +28,5 @@ function verifyToken(req, res, next) {
 }
 
 module.exports = {
-  verifyToken,
+  verifyToken
 };

@@ -1,45 +1,28 @@
 const jwt = require('jsonwebtoken');
 
-// Access Token 생성
 function generateAccessToken(userId, email) {
-  return jwt.sign({ userId, email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+  return jwt.sign({ userId, email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });  // 비밀키 확인
 }
 
-// Refresh Token 생성
 function generateRefreshToken(userId, email) {
-  return jwt.sign({ userId, email }, process.env.JWT_SECRET_KEY, { expiresIn: '7d' });
+  return jwt.sign({ userId, email }, process.env.JWT_SECRET_KEY, { expiresIn: '7d' });  // 비밀키 확인
 }
 
 async function verifyAccessToken(token) {
-    try {
-         // .env에서 비밀 키 로드 비밀키 정의되지 않은 경우
-      if (!process.env.JWT_SECRET_KEY) {
-        throw new Error('JWT_SECRET_KEY is not defined');
-      }
-      console.log('Secret Key:', process.env.JWT_SECRET_KEY);  // 비밀 키 확인
-      console.log('Token:', token);  // 토큰 확인
-
-
-      // 토큰 검증
-      const decoded = await jwt.verify(token, process.env.JWT_SECRET_KEY);
-      return decoded;
-    } catch (error) {
-      console.error('JWT Verification Error:', error);
-      throw error;
-    }
+  try {
+    return await jwt.verify(token, process.env.JWT_SECRET_KEY);  // 비밀키 확인
+  } catch (error) {
+    throw error;
   }
-  
-  async function verifyRefreshToken(token) {
-    try {
-      if (!process.env.JWT_SECRET_KEY) {
-        throw new Error('JWT_SECRET_KEY is not defined');
-      }
-      return await jwt.verify(token, process.env.JWT_SECRET_KEY);  // 비밀 키 전달
-    } catch (error) {
-      throw error;
-    }
+}
+
+async function verifyRefreshToken(token) {
+  try {
+    return await jwt.verify(token, process.env.JWT_SECRET_KEY);  // 비밀키 확인
+  } catch (error) {
+    throw error;
   }
-  
+}
 
 module.exports = {
   generateAccessToken,
