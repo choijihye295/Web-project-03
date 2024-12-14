@@ -32,12 +32,36 @@ class JobController {
 
   static async postJob(req, res) {
     try {
-      const result = await JobService.postJob(req.body);
-      successResponse(res, { jobId: result.insertId }, null);
+      const {
+        title, link, career, education, employment_type, deadline, skill, salary,
+        company_name, location_name, job_field
+      } = req.body;
+  
+      // JobService를 통해 데이터베이스에 저장
+      const result = await JobService.postJob({
+        title, link, career, education, employment_type, deadline, skill, salary,
+        company_name, location_name, job_field
+      });
+  
+      // 중복된 링크 에러 처리
+      if (result.status === 'error' && result.code === 'DUPLICATE_LINK') {
+        return errorResponse(res, result.message, result.code);
+      }
+  
+      // 삽입 실패 에러 처리
+      if (!result.insertId) {
+        return errorResponse(res, 'Job posting failed', 'INSERT_ERROR');
+      }
+  
+      // 성공 응답
+      successResponse(res, { jobId: result.insertId });
     } catch (error) {
-      errorResponse(res, error.message);
+      console.error('Error posting job:', error);
+      errorResponse(res, error.message, 'SERVER_ERROR');
     }
   }
+  
+  
 
   static updateJob = async (req, res) => {
     const { id } = req.params;

@@ -1,10 +1,11 @@
-require('dotenv').config();
+require('dotenv').config(); // .env 파일 로드
 
 const express = require('express');
 const cors = require('cors');
 const jobRoutes = require('./routes/jobRoutes');  // 라우트 파일 임포트
 const authRoutes = require('./routes/authRoutes');  // authRoutes 추가
 const app = express();
+
 
 // 미들웨어 설정
 app.use(cors());

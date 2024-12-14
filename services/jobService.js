@@ -92,46 +92,47 @@ const postJob = async (jobData) => {
   
     const connection = await pool.getConnection();
   
-    // 먼저 link가 이미 존재하는지 확인
-    const [existingJob] = await connection.query('SELECT * FROM Jobs WHERE link = ?', [link]);
+    try {
+      console.log('Job data to insert:', jobData); // 디버깅용 데이터 출력
   
-    if (existingJob.length > 0) {
+      const query = `
+        INSERT INTO Jobs (title, link, career, education, employment_type, deadline, skill, salary, company_name, location_name, job_field)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+  
+      console.log('Executing query:', query);
+  
+      const [result] = await connection.query(query, [
+        title, link, career, education, employment_type, deadline || null, skill || '', salary || '',
+        company_name, location_name, job_field || ''
+      ]);
+  
       connection.release();
-      return {
-        status: 'error',
-        message: 'Duplicate entry for link. This job is already posted.',
-        code: 'DUPLICATE_LINK'
-      };
-    }
   
-    const query = `
-      INSERT INTO Jobs (title, link, career, education, employment_type, deadline, skill, salary, company_name, location_name, job_field)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+      console.log('Insert result:', result);
   
-    const [result] = await connection.query(query, [
-      title, link, career, education, employment_type, deadline || null, skill || '', salary || '',
-      company_name, location_name, job_field || ''
-    ]);
-  
-    connection.release();
-  
-    // result.insertId가 반환되는지 확인
-    if (result && result.insertId) {
-      return {
-        status: 'success',
-        data: {
-          jobId: result.insertId // 새로 생성된 jobId 반환
-        }
-      };
-    } else {
-      return {
-        status: 'error',
-        message: 'Job posting failed',
-        code: 'INSERT_ERROR'
-      };
+      // Insert 결과 확인
+      if (result && result.insertId) {
+        return {
+          status: 'success',
+          data: {
+            jobId: result.insertId
+          }
+        };
+      } else {
+        return {
+          status: 'error',
+          message: 'Job posting failed',
+          code: 'INSERT_ERROR'
+        };
+      }
+    } catch (error) {
+      console.error('Error executing query:', error);
+      connection.release();
+      throw error;
     }
   };
+  
   
   const updateJob = async (id, jobData) => {
     const { title, link, career, education, employment_type, deadline, skill, salary, company_name, location_name, job_field } = jobData;
