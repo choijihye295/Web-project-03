@@ -61,7 +61,7 @@ class AuthController {
         process.env.JWT_SECRET_KEY,  // 환경 변수로 비밀키 사용
         { expiresIn: '1h' }  // 1시간 동안 유효
       );
-      
+
       // 로그인 이력 저장
       await LoginHistory.create({
         user_id: user.id,
@@ -123,24 +123,33 @@ class AuthController {
   // 회원 정보 수정
   static async updateProfile(req, res) {
     const { email, passwd, name } = req.body;
-    const { userId } = req.user;  // 미들웨어에서 인증 후 userId가 담겨있다고 가정
-
+    const { userId } = req.user; // 미들웨어에서 인증된 userId 가져오기
+  
     try {
       // 비밀번호 암호화
-      const hashedPassword = passwd ? bcrypt.hashSync(passwd, 10) : undefined;
-
-      const result = await User.updateUser(userId, email, hashedPassword, name);
-
-      if (result.affectedRows > 0) {
-        successResponse(res, { message: 'Profile updated successfully' });
-      } else {
-        errorResponse(res, 'User not found', 'USER_NOT_FOUND');
+      const hashedPassword = passwd ? bcrypt.hashSync(passwd, 10) : null;
+  
+      // 프로필 업데이트
+      if (email || name) {
+        const result = await User.updateById(userId, { email, name });
+  
+        if (result.affectedRows === 0) {
+          return errorResponse(res, 'User not found', 'USER_NOT_FOUND');
+        }
       }
+  
+      // 비밀번호 업데이트
+      if (hashedPassword) {
+        await User.updatePassword(userId, hashedPassword);
+      }
+  
+      successResponse(res, { message: 'Profile updated successfully' });
     } catch (error) {
       console.error('Error updating profile:', error);
       errorResponse(res, error.message);
     }
   }
+  
 
   // 회원 탈퇴
   static async deleteAccount(req, res) {
