@@ -62,13 +62,21 @@ class AuthController {
         { expiresIn: '1h' }  // 1시간 동안 유효
       );
 
+      // JWT 리프레시 토큰 발급
+      const refreshToken = jwt.sign(
+        { userId: user.id, email: user.email },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: '7d' } // 리프레시 토큰의 유효기간은 7일
+      );
+
       // 로그인 이력 저장
       await LoginHistory.create({
         user_id: user.id,
         login_time: new Date(),
       });
 
-      successResponse(res, { message: 'Login successful', accessToken });
+      
+      successResponse(res, { message: 'Login successful', accessToken, refreshToken });
     } catch (error) {
       console.error('Error logging in:', error);
       errorResponse(res, error.message);
@@ -97,26 +105,26 @@ class AuthController {
   // 토큰 갱신
   static async refresh(req, res) {
     const { refreshToken } = req.body;
-
+  
     if (!refreshToken) {
       return errorResponse(res, 'Refresh token is required', 'MISSING_TOKEN');
     }
-
+  
     try {
-      // Refresh 토큰 검증
-      jwt.verify(refreshToken, 'your-secret-key', (err, decoded) => {
-        if (err) {
-          return errorResponse(res, 'Invalid or expired refresh token', 'INVALID_TOKEN');
-        }
-
-        // 새로운 Access 토큰 발급
-        const accessToken = jwt.sign({ userId: decoded.userId, email: decoded.email }, 'your-secret-key', { expiresIn: '1h' });
-
-        successResponse(res, { message: 'Access token refreshed', accessToken });
-      });
+      // Refresh Token 검증
+      const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET_KEY);
+  
+      // 새로운 Access Token 생성
+      const accessToken = jwt.sign(
+        { userId: decoded.userId, email: decoded.email },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: '1h' }
+      );
+  
+      successResponse(res, { message: 'Access token refreshed', accessToken });
     } catch (error) {
       console.error('Error refreshing token:', error);
-      errorResponse(res, error.message);
+      errorResponse(res, 'Invalid or expired refresh token', 'INVALID_TOKEN');
     }
   }
 
