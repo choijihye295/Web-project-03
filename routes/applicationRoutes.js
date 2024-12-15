@@ -75,7 +75,7 @@ router.post('/', verifyToken, ApplicationController.apply);
  *           example: "Applied"
  *       - name: sort
  *         in: query
- *         description: 정렬 기준 (예: 날짜별)
+ *         description: "정렬 기준 (예: 날짜별)"
  *         required: false
  *         schema:
  *           type: string

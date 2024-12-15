@@ -24,7 +24,7 @@ app.use('/bookmarks', bookmarkRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-console.log('Swagger Docs available at http://localhost:17089/api-docs');
+console.log('Swagger Docs available at http://localhost:13221/api-docs');
 
 // // 서버 시작
 const PORT = 3000;
