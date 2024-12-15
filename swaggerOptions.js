@@ -18,6 +18,10 @@ const swaggerOptions = {
         url: `http://${HOST}:${PORT}`, // 외부 접속용 URL
         description: "Public server",
       },
+      {
+        url: `http://localhost:3000`, // 로컬 테스트용 URL
+        description: 'Local server',
+      },
     ],
     components: {
       securitySchemes: {
