@@ -19,7 +19,7 @@ const swaggerOptions = {
         description: "Public server",
       },
       {
-        url: `http://localhost:3000`, // 로컬 테스트용 URL
+        url: `http://localhost:${PORT}`, // 로컬 테스트용 URL
         description: 'Local server',
       },
     ],
