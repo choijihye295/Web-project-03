@@ -6,6 +6,10 @@ const jobRoutes = require('./routes/jobRoutes');  // 채용공고 라우트
 const authRoutes = require('./routes/authRoutes');  // 회원관리 인증 라우트
 const applicationRoutes = require('./routes/applicationRoutes'); //지원관리 라우트
 const bookmarkRoutes = require('./routes/bookmarkRoutes'); // 북마크 라우트 추가
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('./swaggerOptions');
+
 const app = express();
 
 
@@ -19,8 +23,16 @@ app.use('/auth', authRoutes);
 app.use('/applications', applicationRoutes);
 app.use('/bookmarks', bookmarkRoutes);
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+console.log('Swagger Docs available at http://localhost:3000/api-docs');
+
 // 서버 시작
-const PORT = 3000;
+// const PORT = 3000;
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}`);
+// });
+const PORT = 17089; // 포트 17089로 변경
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
