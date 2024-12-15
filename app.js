@@ -12,6 +12,13 @@ const swaggerDocs = require('./swaggerOptions');
 
 const app = express();
 
+// CORS 설정 (기본 설정을 구체화)
+app.use(cors({
+    origin: '*', // 모든 도메인 허용 (운영 환경에서는 특정 도메인만 허용 권장)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // 허용되는 HTTP 메서드
+    allowedHeaders: ['Content-Type', 'Authorization'] // 허용되는 헤더
+}));
+
 // 미들웨어 설정
 app.use(cors());
 app.use(express.json());
@@ -31,7 +38,7 @@ console.log('Swagger Docs available at http://localhost:13221/api-docs');
 // app.listen(PORT, () => {
 //   console.log(`Server is running on port ${PORT}`);
 // });
-const PORT = 13221; // 포트 17089로 변경
+const PORT = 13221; 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
