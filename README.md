@@ -37,7 +37,7 @@ Node.js, Express, MySQL을 사용한 구인구직 웹 서비스입니다.
 
 1. 저장소 클론:
 ```bash
-git clone [https://github.com/choijihye295/streamlit_dash_app.git]
+git clone https://github.com/choijihye295/streamlit_dash_app.git
 cd wsd-assignment-03
 ```
 
