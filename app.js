@@ -2,9 +2,10 @@ require('dotenv').config(); // .env 파일 로드
 
 const express = require('express');
 const cors = require('cors');
-const jobRoutes = require('./routes/jobRoutes');  // 라우트 파일 임포트
-const authRoutes = require('./routes/authRoutes');  // authRoutes 추가
-const applicationRoutes = require('./routes/applicationRoutes');
+const jobRoutes = require('./routes/jobRoutes');  // 채용공고 라우트
+const authRoutes = require('./routes/authRoutes');  // 회원관리 인증 라우트
+const applicationRoutes = require('./routes/applicationRoutes'); //지원관리 라우트
+const bookmarkRoutes = require('./routes/bookmarkRoutes'); // 북마크 라우트 추가
 const app = express();
 
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/jobs', jobRoutes);
 app.use('/auth', authRoutes);
 app.use('/applications', applicationRoutes);
+app.use('/bookmarks', bookmarkRoutes);
 
 // 서버 시작
 const PORT = 3000;
