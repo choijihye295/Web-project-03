@@ -12,7 +12,6 @@ const swaggerDocs = require('./swaggerOptions');
 
 const app = express();
 
-
 // 미들웨어 설정
 app.use(cors());
 app.use(express.json());
@@ -27,7 +26,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 console.log('Swagger Docs available at http://localhost:3000/api-docs');
 
-// 서버 시작
+// // 서버 시작
 // const PORT = 3000;
 // app.listen(PORT, () => {
 //   console.log(`Server is running on port ${PORT}`);

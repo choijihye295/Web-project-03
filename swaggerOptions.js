@@ -11,8 +11,8 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
-        description: 'Local server',
+        url: "http://localhost:17089", // 서버 URL 정의
+        description: "Local server",
       },
     ],
     components: {
