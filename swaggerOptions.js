@@ -1,6 +1,10 @@
 // swaggerOptions.js
 const swaggerJsDoc = require('swagger-jsdoc');
 
+// 환경변수에서 PORT와 HOST 값을 가져오기
+const PORT = process.env.PORT || 17089;
+const HOST = process.env.HOST || '113.198.66.75';
+
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
@@ -11,14 +15,18 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:17089", // 서버 URL 정의
-        description: "Local server",
+        url: `http://${HOST}:${PORT}`, // 외부 접속용 URL
+        description: "Public server",
+      },
+      {
+        url: `http://localhost:${PORT}`, // 로컬 테스트용 URL
+        description: 'Local server',
       },
     ],
     components: {
       securitySchemes: {
         bearerAuth: {
-          type: 'http',
+          type: 'https',
           scheme: 'bearer',
           bearerFormat: 'JWT',
         },
