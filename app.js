@@ -27,11 +27,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 console.log('Swagger Docs available at http://localhost:13221/api-docs');
 
 // // 서버 시작
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-// const PORT = 13221; // 포트 17089로 변경
-// app.listen(PORT, '0.0.0.0', () => {
+// const PORT = 3000;
+// app.listen(PORT, () => {
 //   console.log(`Server is running on port ${PORT}`);
 // });
+const PORT = 13221; // 포트 17089로 변경
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on port ${PORT}`);
+});
