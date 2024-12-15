@@ -15,11 +15,11 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `http://${HOST}:${PORT}`, // 외부 접속용 URL
+        url: `http://113.198.66.75:13221`, // 외부 접속용 URL
         description: "Public server",
       },
       {
-        url: `http://localhost:${PORT}`, // 로컬 테스트용 URL
+        url: `http://localhost:3000`, // 로컬 테스트용 URL
         description: 'Local server',
       },
     ],
