@@ -2,7 +2,7 @@
 const swaggerJsDoc = require('swagger-jsdoc');
 
 // 환경변수에서 PORT와 HOST 값을 가져오기
-const PORT = process.env.PORT || 17089;
+const PORT = process.env.PORT || 13221;
 const HOST = process.env.HOST || '113.198.66.75';
 
 const swaggerOptions = {

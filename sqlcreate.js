@@ -6,7 +6,7 @@ const pool = mysql.createPool({
   user: 'cjh',    // MySQL 사용자 이름
   password: 'fabia8990!',// MySQL 비밀번호
   database: 'saramin_db',// 사용할 데이터베이스 이름
-  port: 10089,                // MySQL 서버 포트 (기본은 3306)
+  port: 10221,                // MySQL 서버 포트 (기본은 3306)
   multipleStatements: true    // 여러 SQL문을 하나로 실행할 수 있도록 설정
 });
 

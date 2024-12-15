@@ -8,7 +8,7 @@ const pool = mysql.createPool({
   user: 'cjh',
   password: 'fabia8990!',
   database: 'saramin_db',
-  port: 10089,
+  port: 10221,
 });
 
 function formatDeadline(deadline) {
