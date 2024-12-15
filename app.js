@@ -22,7 +22,11 @@ app.use(cors({
 // 미들웨어 설정
 app.use(cors());
 app.use(express.json());
-
+// 기존 코드 위에 추가
+app.get('/', (req, res) => {
+    res.send('Welcome to the Job Application API');
+  });
+  
 // API 라우트 연결
 app.use('/jobs', jobRoutes);
 app.use('/auth', authRoutes);
