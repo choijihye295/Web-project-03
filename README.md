@@ -202,7 +202,7 @@ CREATE TABLE LoginHistory (
 ```json
 {
   "status": "success",
-  "data": { ... } // 또는 배열
+  "data": { }
 }
 ```
 
