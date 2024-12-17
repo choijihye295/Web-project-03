@@ -152,6 +152,8 @@ CREATE TABLE LoginHistory (
 ### Jobs (채용공고)
 - **채용공고 목록 조회**
   - `GET /jobs`
+  - `GET /jobs?page=1`
+  - `GET /jobs?job_field=Java`
   
 - **채용공고 상세 조회**
   - `GET /jobs/{id}`
